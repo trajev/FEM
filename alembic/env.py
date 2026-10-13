@@ -10,7 +10,10 @@ from app.core.config import settings
 from app.db.base import Base
 
 # 2. Import ALL ORM models so Base.metadata knows about them
-import app.models.user  # Add other model imports here as your project grows
+import app.models.user
+import app.models.house
+import app.models.house_membership
+# Add other model imports here as your project grows
 
 # Alembic Config object
 config = context.config

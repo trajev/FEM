@@ -161,12 +161,14 @@ HTTP Request
 ## V1 Roadmap
 
 - [x] Users — Registration and profile CRUD
-- [ ] Households — Create and join a household with invitation codes
-- [ ] Household membership — Associate users with households
-- [ ] Categories — Household-scoped expense categories
-- [ ] Payment methods — Household-scoped payment methods
-- [ ] Expenses — Full CRUD with household authorization
+- [ ] Households — Create a household, get HouseID
+- [ ] Join household — Family members join via HouseID
+- [ ] Categories — Shared expense categories (Groceries, Rent, etc.)
+- [ ] Payment methods — Cash, UPI, Card, etc.
+- [ ] Expenses — All members log daily expenses
 - [ ] Filtering and pagination — Date range, category, member filters
-- [ ] Summaries — Daily, weekly, and monthly aggregations
-- [ ] Authentication — JWT-based auth and protected routes
+- [ ] Reports — Daily, weekly, and monthly summaries with breakdowns
+- [ ] Authentication — JWT-based register/login
+- [ ] Authorization — Household-scoped access control
+- [ ] Notification system — Scheduled reminders to add expenses
 - [ ] React dashboard — Frontend with forms, filters, and charts
