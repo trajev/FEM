@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from app.models.house import House
@@ -14,6 +14,10 @@ class HouseRepository:
 
   async def get_by_id( self, house_id:str ) -> House | None:
     house = await self.db.execute( select(House).options(joinedload(House.creator)).where(House.id==house_id) )
+    return house.scalar_one_or_none()
+
+  async def get_by_joincode( self, join_code:str ) -> House | None :
+    house = await self.db.execute( select(House).options(joinedload(House.creator)).where(House.join_code==join_code) )
     return house.scalar_one_or_none()
 
 

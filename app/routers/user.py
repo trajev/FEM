@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.user import UserRequest, UserResponse
 from app.service.user_service import UserService
 
-router = APIRouter( prefix="/users", tags=["Users"] )
+router = APIRouter( prefix="/users" )
 
 
 def get_user_service( db:AsyncSession=Depends(get_db) ) -> UserService :

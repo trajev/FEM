@@ -4,13 +4,18 @@ from fastapi import HTTPException, status
 from app.schemas.house import HouseRequest, HouseResponse
 from app.repository.user_repository import UserRepository
 from app.utils.helper import generate_join_code
+from app.repository.house_membership_repository import HouseMembershipRepository
+from app.models.house_membership import HouseMembership
+from app.enums.HouseMembershipRole import HouseMembershipRole
+
 
 
 class HouseService:
 
-  def __init__(self, repo:HouseRepository, user_repo:UserRepository ):
+  def __init__(self, repo:HouseRepository, user_repo:UserRepository, hm_repo:HouseMembershipRepository ):
     self.repo = repo
     self.user_repo = user_repo
+    self.hm_repo = hm_repo
 
 
   async def get_house_by_id( self, house_id:str ) -> House | None :
@@ -19,6 +24,11 @@ class HouseService:
       raise HTTPException( status_code=status.HTTP_404_NOT_FOUND, detail=f"House not found with id {house_id}" )
     return house
 
+  async def get_house_by_joincode(self, join_code:str) -> House | None :
+    house = await self.repo.get_by_joincode( join_code )
+    if house is None:
+      raise HTTPException( status_code=status.HTTP_404_NOT_FOUND, detail=f"House not found with join code: {join_code}" )
+    return house
 
 
   async def create_house( self, house_data:HouseRequest ) -> HouseResponse:
@@ -30,7 +40,12 @@ class HouseService:
 
     join_code = generate_join_code()
     new_house = House( **house_data.model_dump(), join_code=join_code  )
-    return await self.repo.create( new_house )
+    created_house = await self.repo.create(new_house)
+
+    hm = HouseMembership( user_id=user.id, house_id=created_house.id, role=HouseMembershipRole.ADMIN )
+    await self.hm_repo.create(hm)
+
+    return created_house
 
 
 
